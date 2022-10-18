@@ -25,12 +25,6 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-  int currentPage = 0;
-  final screens = [
-    const Upload(),
-    const Upload(),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
