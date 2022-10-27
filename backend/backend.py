@@ -59,9 +59,6 @@ class Location():
         self.n4 = n4
         self.n5 = n5
 
-moved_itens = set()
-checked_itens = set()
-
 inventory_table = pd.read_excel(INVENTORY_FILE, index_col=ID_COLUMN, usecols=COLUMNS)
 
 #Creates a status column and initializes all of its cells with the NOT_SCANNED status value
@@ -94,10 +91,19 @@ def set_item_location(item_id, location: Location):
     inventory_table.loc[item_id, N4_COLUMN] = location.n4
     inventory_table.loc[item_id, N5_COLUMN] = location.n5
 
+
+def get_scan_summary():
+    not_scanned_itens = inventory_table.loc[inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.NOT_SCANNED.value]
+    scanned_itens = inventory_table.loc[inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.SCANNED.value]
+    moved_itens = inventory_table.loc[inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.SCANNED_AND_MOVED.value]
+
+    return not_scanned_itens, scanned_itens, moved_itens
+
 location = Location('area', 'organization_description', 'building', 'n1', 'n2', 'n3', 'n4', 'n5')
 
-print(get_item_location(790934))
+set_item_status(790934, ITEM_STATUS.SCANNED)
+set_item_status(22484, ITEM_STATUS.SCANNED_AND_MOVED)
 
-set_item_location(790934, location)
+not_scanned_itens, scanned_itens, moved_itens = get_scan_summary()
 
-print(get_item_location(790934))
+print(not_scanned_itens, scanned_itens, moved_itens)
