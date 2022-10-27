@@ -4,30 +4,50 @@ from enum import Enum
 
 
 INVENTORY_FILE = pathlib.Path('inventory.xlsx')
+
+AREA_COLUMN = 'Área de Patrimônio'
 ID_COLUMN = 'Identificador'
+DEPRECATED_ID_COLUMN = 'PI Antigo'
+ORGANIZATION_DESCRIPTION_COLUMN = 'Desc. Órgão'
+BUILDING_COLUMN = 'Imóvel'
+N1_COLUMN = 'Local N1'
+N2_COLUMN = 'Local N2'
+N3_COLUMN = 'Local N3'
+N4_COLUMN = 'Local N4'
+N5_COLUMN = 'Local N5'
+
 ITEM_STATUS_COLUMN = 'item_status'
 
 COLUMNS = [
-    'Área de Patrimônio',
-    'Identificador',
-    'PI Antigo',
-    'Desc. Órgão',
-    'Imóvel',
-    'Local N1',
-    'Local N2',
-    'Local N3',
-    'Local N4',
-    'Local N5',
+    AREA_COLUMN,
+    ID_COLUMN,
+    DEPRECATED_ID_COLUMN,
+    ORGANIZATION_DESCRIPTION_COLUMN,
+    BUILDING_COLUMN,
+    N1_COLUMN,
+    N2_COLUMN,
+    N3_COLUMN,
+    N4_COLUMN,
+    N5_COLUMN,
 ]
-
-
 
 class ITEM_STATUS(Enum):
     NOT_SCANNED = 0
     SCANNED = 1
     SCANNED_AND_MOVED = 2
 
-class Place():
+class Location():
+
+    def __repr__(self):
+        return f'(area: {self.area},\
+        description: {self.description},\
+        building: {self.building},\
+        n1: {self.n1},\
+        n2: {self.n2},\
+        n3: {self.n3},\
+        n4: {self.n4},\
+        n4: {self.n4})\
+        '
 
     def __init__(self, area: str, description: str, building: str, n1: str, n2: str, n3: str, n4: str, n5: str):
         self.area = area
@@ -38,8 +58,6 @@ class Place():
         self.n3 = n3
         self.n4 = n4
         self.n5 = n5
-    
-Place('a', 'b', 'b', 'b', 'b', 'b', 'b', 'b').area
 
 moved_itens = set()
 checked_itens = set()
@@ -52,8 +70,19 @@ inventory_table[ITEM_STATUS_COLUMN] = ITEM_STATUS.NOT_SCANNED.value
 
 def set_item_status(item_id, status: Enum):
     inventory_table.loc[item_id, ITEM_STATUS_COLUMN] = status.value
-    
 
-set_item_status(22484, ITEM_STATUS.SCANNED_AND_MOVED)
+def get_item_location(item_id):
+    item_row = inventory_table.loc[item_id]
+    area = item_row[AREA_COLUMN]
+    description = item_row[ORGANIZATION_DESCRIPTION_COLUMN]
+    building = item_row[BUILDING_COLUMN]
+    n1 = item_row[N1_COLUMN]
+    n2 = item_row[N2_COLUMN]
+    n3 = item_row[N3_COLUMN]
+    n4 = item_row[N4_COLUMN]
+    n5 = item_row[N5_COLUMN]
 
-print(inventory_table.loc[22484, ITEM_STATUS_COLUMN])
+    return Location(area, description, building, n1, n2, n3, n4, n5)
+
+
+print(get_item_location(790934))
