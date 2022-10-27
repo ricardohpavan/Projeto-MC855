@@ -40,7 +40,7 @@ class Location():
 
     def __repr__(self):
         return f'(area: {self.area},\
-        description: {self.description},\
+        organization_description: {self.organization_description},\
         building: {self.building},\
         n1: {self.n1},\
         n2: {self.n2},\
@@ -49,9 +49,9 @@ class Location():
         n4: {self.n4})\
         '
 
-    def __init__(self, area: str, description: str, building: str, n1: str, n2: str, n3: str, n4: str, n5: str):
+    def __init__(self, area: str, organization_description: str, building: str, n1: str, n2: str, n3: str, n4: str, n5: str):
         self.area = area
-        self.description = description
+        self.organization_description = organization_description
         self.building = building
         self.n1 = n1
         self.n2 = n2
@@ -74,7 +74,7 @@ def set_item_status(item_id, status: Enum):
 def get_item_location(item_id):
     item_row = inventory_table.loc[item_id]
     area = item_row[AREA_COLUMN]
-    description = item_row[ORGANIZATION_DESCRIPTION_COLUMN]
+    organization_description = item_row[ORGANIZATION_DESCRIPTION_COLUMN]
     building = item_row[BUILDING_COLUMN]
     n1 = item_row[N1_COLUMN]
     n2 = item_row[N2_COLUMN]
@@ -82,7 +82,22 @@ def get_item_location(item_id):
     n4 = item_row[N4_COLUMN]
     n5 = item_row[N5_COLUMN]
 
-    return Location(area, description, building, n1, n2, n3, n4, n5)
+    return Location(area, organization_description, building, n1, n2, n3, n4, n5)
 
+def set_item_location(item_id, location: Location):
+    inventory_table.loc[item_id, AREA_COLUMN] = location.area
+    inventory_table.loc[item_id, ORGANIZATION_DESCRIPTION_COLUMN] = location.organization_description
+    inventory_table.loc[item_id, BUILDING_COLUMN] = location.building
+    inventory_table.loc[item_id, N1_COLUMN] = location.n1
+    inventory_table.loc[item_id, N2_COLUMN] = location.n2
+    inventory_table.loc[item_id, N3_COLUMN] = location.n3
+    inventory_table.loc[item_id, N4_COLUMN] = location.n4
+    inventory_table.loc[item_id, N5_COLUMN] = location.n5
+
+location = Location('area', 'organization_description', 'building', 'n1', 'n2', 'n3', 'n4', 'n5')
+
+print(get_item_location(790934))
+
+set_item_location(790934, location)
 
 print(get_item_location(790934))
