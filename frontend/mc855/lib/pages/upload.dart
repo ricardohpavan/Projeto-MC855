@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:mc855/components/overlay_loading.dart';
-import 'package:mc855/pages/has_file.dart';
+import 'package:mc855/pages/scan.dart';
 
 class Upload extends StatefulWidget {
   const Upload({super.key});
@@ -13,7 +13,7 @@ class Upload extends StatefulWidget {
 class _UploadState extends State<Upload> {
   bool isLoading = false;
 
-  void pickFile() async {
+  void _pickFile() async {
     setState(() {
       isLoading = true;
     });
@@ -27,7 +27,11 @@ class _UploadState extends State<Upload> {
     PlatformFile file = result.files.first;
     // ignore: use_build_context_synchronously
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HasFile(file: file)));
+      context,
+      MaterialPageRoute(
+        builder: (context) => const Scan(),
+      ),
+    );
     setState(() {
       isLoading = false;
     });
@@ -35,33 +39,35 @@ class _UploadState extends State<Upload> {
 
   @override
   Widget build(BuildContext context) {
-    final body = Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-              padding: const EdgeInsets.all(24),
+    final body = Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(24),
+              ),
+              onPressed: () async {
+                _pickFile();
+              },
+              child: const Icon(
+                Icons.file_upload_outlined,
+                size: 100,
+              ),
             ),
-            onPressed: () async {
-              pickFile();
-            },
-            child: const Icon(
-              Icons.file_upload_outlined,
-              size: 100,
+            const Padding(
+              padding: EdgeInsets.only(top: 20.0),
+              child: Text(
+                'Importar planilha SIAD',
+                style: TextStyle(fontSize: 20),
+              ),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(top: 20.0),
-            child: Text(
-              'Importar planilha SIAD',
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
     return isLoading
