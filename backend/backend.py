@@ -1,5 +1,6 @@
 import pandas as pd
 import pathlib
+import json
 from enum import Enum
 
 
@@ -46,7 +47,7 @@ class Location():
         n2: {self.n2},\
         n3: {self.n3},\
         n4: {self.n4},\
-        n4: {self.n4})\
+        n5: {self.n5})\
         '
 
     def __init__(self, area: str, organization_description: str, building: str, n1: str, n2: str, n3: str, n4: str, n5: str):
@@ -68,19 +69,6 @@ inventory_table[ITEM_STATUS_COLUMN] = ITEM_STATUS.NOT_SCANNED.value
 def set_item_status(item_id, status: Enum):
     inventory_table.loc[item_id, ITEM_STATUS_COLUMN] = status.value
 
-def get_item_location(item_id):
-    item_row = inventory_table.loc[item_id]
-    area = item_row[AREA_COLUMN]
-    organization_description = item_row[ORGANIZATION_DESCRIPTION_COLUMN]
-    building = item_row[BUILDING_COLUMN]
-    n1 = item_row[N1_COLUMN]
-    n2 = item_row[N2_COLUMN]
-    n3 = item_row[N3_COLUMN]
-    n4 = item_row[N4_COLUMN]
-    n5 = item_row[N5_COLUMN]
-
-    return Location(area, organization_description, building, n1, n2, n3, n4, n5)
-
 def set_item_location(item_id, location: Location):
     inventory_table.loc[item_id, AREA_COLUMN] = location.area
     inventory_table.loc[item_id, ORGANIZATION_DESCRIPTION_COLUMN] = location.organization_description
@@ -91,19 +79,14 @@ def set_item_location(item_id, location: Location):
     inventory_table.loc[item_id, N4_COLUMN] = location.n4
     inventory_table.loc[item_id, N5_COLUMN] = location.n5
 
+def get_item_location(item_id):
+    return inventory_table.loc[item_id].to_json(orient="index")
 
-def get_scan_summary():
-    not_scanned_itens = inventory_table.loc[inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.NOT_SCANNED.value]
-    scanned_itens = inventory_table.loc[inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.SCANNED.value]
-    moved_itens = inventory_table.loc[inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.SCANNED_AND_MOVED.value]
+def get_not_scanned_itens():
+    return inventory_table.loc[inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.NOT_SCANNED.value].to_json(orient="index")
 
-    return not_scanned_itens, scanned_itens, moved_itens
+def get_scanned_itens():
+    return inventory_table.loc[inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.SCANNED.value].to_json(orient="index")
 
-location = Location('area', 'organization_description', 'building', 'n1', 'n2', 'n3', 'n4', 'n5')
-
-set_item_status(790934, ITEM_STATUS.SCANNED)
-set_item_status(22484, ITEM_STATUS.SCANNED_AND_MOVED)
-
-not_scanned_itens, scanned_itens, moved_itens = get_scan_summary()
-
-print(not_scanned_itens, scanned_itens, moved_itens)
+def get_moved_itens():
+    return inventory_table.loc[inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.SCANNED_AND_MOVED.value].to_json(orient="index")
