@@ -1,6 +1,5 @@
 import pandas as pd
 import pathlib
-import json
 from enum import Enum
 
 
@@ -66,8 +65,9 @@ inventory_table = pd.read_excel(INVENTORY_FILE, index_col=ID_COLUMN, usecols=COL
 inventory_table[ITEM_STATUS_COLUMN] = ITEM_STATUS.NOT_SCANNED.value
 
 
-def set_item_status(item_id, status: Enum):
+def set_item_status(item_id, status: ITEM_STATUS):
     inventory_table.loc[item_id, ITEM_STATUS_COLUMN] = status.value
+    return status
 
 def set_item_location(item_id, location: Location):
     inventory_table.loc[item_id, AREA_COLUMN] = location.area
@@ -78,6 +78,7 @@ def set_item_location(item_id, location: Location):
     inventory_table.loc[item_id, N3_COLUMN] = location.n3
     inventory_table.loc[item_id, N4_COLUMN] = location.n4
     inventory_table.loc[item_id, N5_COLUMN] = location.n5
+    return location
 
 def get_item_location(item_id):
     return inventory_table.loc[item_id].to_json(orient="index")
