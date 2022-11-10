@@ -1,12 +1,21 @@
 from fastapi import FastAPI
 from backend import set_item_status, set_item_location, get_item_location, get_not_scanned_itens, get_scanned_itens, get_moved_itens
 from enum import Enum
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 #Rodar com 'uvicorn main:app --reload'
 #Pegar um item "http://127.0.0.1:8000/get-item/791140"
 #Pegar a lista de não escaneados "http://127.0.0.1:8000/not-scanned-itens"
 #Pegar a lista de escaneados "http://127.0.0.1:8000/scanned-itens"
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class ITEM_STATUS(Enum):
     NOT_SCANNED = 0

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mc855/api/api_service.dart';
 import 'package:mc855/components/decision_modal.dart';
 
 class Scan extends StatefulWidget {
@@ -11,7 +12,9 @@ class Scan extends StatefulWidget {
 class _ScanState extends State<Scan> {
   TextEditingController inputController = TextEditingController();
 
-  void handleAnalysis() {
+  void handleAnalysis() async {
+    String? response = await ApiService().getItem(791140);
+    print('3 $response');
     showDialog(context: context, builder: (_) => const DecisionModal());
   }
 
