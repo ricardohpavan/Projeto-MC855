@@ -33,10 +33,19 @@ def get_not_scanned():
 def get_scanned():
     return get_scanned_itens()
 
-@app.get("/upload")
-def upload():
+@app.put("/upload")
+def upload(file: UploadFile = File(...)):
+    try:
+        contents = file.file.read()
+        with open(file.filename, 'wb') as f:
+            f.write(contents)
+    except Exception:
+        return {"message": "There was an error uploading the file"}
+    finally:
+        file.file.close()
+
     app.was_file_uploaded = True
-    return {"message": f"File successfully uploaded and loaded"}
+    return {"message": f"Successfully uploaded {file.filename}"}
 
 @app.get("/unload-database")
 def unload_database():
