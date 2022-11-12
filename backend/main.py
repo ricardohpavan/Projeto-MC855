@@ -1,6 +1,8 @@
-from fastapi import FastAPI
-from backend import set_item_status, set_item_location, get_item_location, get_not_scanned_itens, get_scanned_itens, get_moved_itens
+from fastapi import FastAPI, UploadFile, File
+from backend import Location, ITEM_STATUS, set_item_status, set_item_location, get_item_location, get_not_scanned_itens, get_scanned_itens, get_moved_itens
 from enum import Enum
+
+
 
 app = FastAPI()
 #Rodar com 'uvicorn main:app --reload'
@@ -8,21 +10,7 @@ app = FastAPI()
 #Pegar a lista de não escaneados "http://127.0.0.1:8000/not-scanned-itens"
 #Pegar a lista de escaneados "http://127.0.0.1:8000/scanned-itens"
 
-class ITEM_STATUS(Enum):
-    NOT_SCANNED = 0
-    SCANNED = 1
-    SCANNED_AND_MOVED = 2
-
-class Location():
-    def __init__(self, area: str, organization_description: str, building: str, n1: str, n2: str, n3: str, n4: str, n5: str):
-        self.area = area
-        self.organization_description = organization_description
-        self.building = building
-        self.n1 = n1
-        self.n2 = n2
-        self.n3 = n3
-        self.n4 = n4
-        self.n5 = n5
+app.was_file_uploaded = False
 
 @app.put("/set-item-status")
 def set_status(item_id: int, status: int):
@@ -45,6 +33,16 @@ def get_not_scanned():
 def get_scanned():
     return get_scanned_itens()
 
-@app.get("/moved-itens")
-def get_moved():
-    return get_moved_itens()
+@app.get("/upload")
+def upload():
+    app.was_file_uploaded = True
+    return {"message": f"File successfully uploaded and loaded"}
+
+@app.get("/unload-database")
+def unload_database():
+    app.was_file_uploaded = False
+    return {"message": f"File successfully unloaded"}
+
+@app.get("/upload-check")
+def upload_check():
+    return {"was-file-uploaded": app.was_file_uploaded}
