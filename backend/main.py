@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, File
 from backend import Location, ITEM_STATUS, set_item_status, set_item_location, get_item_location, get_not_scanned_itens, get_scanned_itens, get_moved_itens
 from enum import Enum
-
+import os
 
 
 app = FastAPI()
@@ -51,6 +51,7 @@ def upload(file: UploadFile = File(...)):
 @app.get("/unload-database")
 def unload_database():
     if hasattr(app, 'filename'):
+        os.remove(app.filename)
         filename = app.filename
         del app.filename
         app.was_file_uploaded = False
