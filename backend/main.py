@@ -45,12 +45,18 @@ def upload(file: UploadFile = File(...)):
         file.file.close()
 
     app.was_file_uploaded = True
-    return {"message": f"Successfully uploaded {file.filename}"}
+    app.filename = file.filename
+    return {"message": f"Successfully uploaded {app.filename}"}
 
 @app.get("/unload-database")
 def unload_database():
-    app.was_file_uploaded = False
-    return {"message": f"File successfully unloaded"}
+    if hasattr(app, 'filename'):
+        filename = app.filename
+        del app.filename
+        app.was_file_uploaded = False
+        return {"message": f"Successfully unloaded {filename}"}
+    else:
+        return {"message": f"No database was uploaded to unload"}
 
 @app.get("/upload-check")
 def upload_check():
