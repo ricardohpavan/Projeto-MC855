@@ -1,14 +1,38 @@
 from fastapi import FastAPI, UploadFile, File
 from backend import Location, ITEM_STATUS, set_item_status, set_item_location, get_item_location, get_not_scanned_itens, get_scanned_itens, get_moved_itens
 from enum import Enum
+from fastapi.middleware.cors import CORSMiddleware
 import os
-
 
 app = FastAPI()
 #Rodar com 'uvicorn main:app --reload'
 #Pegar um item "http://127.0.0.1:8000/get-item/791140"
 #Pegar a lista de não escaneados "http://127.0.0.1:8000/not-scanned-itens"
 #Pegar a lista de escaneados "http://127.0.0.1:8000/scanned-itens"
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+class ITEM_STATUS(Enum):
+    NOT_SCANNED = 0
+    SCANNED = 1
+    SCANNED_AND_MOVED = 2
+
+class Location():
+    def __init__(self, area: str, organization_description: str, building: str, n1: str, n2: str, n3: str, n4: str, n5: str):
+        self.area = area
+        self.organization_description = organization_description
+        self.building = building
+        self.n1 = n1
+        self.n2 = n2
+        self.n3 = n3
+        self.n4 = n4
+        self.n5 = n5
 
 app.was_file_uploaded = False
 
