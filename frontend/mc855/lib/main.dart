@@ -51,7 +51,7 @@ class _RootPageState extends State<RootPage> {
   }
 
   Future<bool> _hasData() async {
-    var result = false;
+    var result = true;
     return result;
   }
 
