@@ -1,6 +1,7 @@
 import pandas as pd
 import pathlib
 from enum import Enum
+from fastapi import Response
 
 
 INVENTORY_FILE = pathlib.Path('inventory.xlsx')
@@ -81,13 +82,17 @@ def set_item_location(item_id, location: Location):
     return location
 
 def get_item_location(item_id):
-    return inventory_table.loc[item_id].to_json(orient="index")
+    resp = inventory_table.loc[item_id].to_json(orient="index")
+    return Response(content=resp, media_type="application/json")
 
 def get_not_scanned_itens():
-    return inventory_table.loc[inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.NOT_SCANNED.value].to_json(orient="index")
+    resp = inventory_table.loc[inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.NOT_SCANNED.value].to_json(orient="index")
+    return Response(content=resp, media_type="application/json")
 
 def get_scanned_itens():
-    return inventory_table.loc[inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.SCANNED.value].to_json(orient="index")
+    resp = inventory_table.loc[inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.SCANNED.value].to_json(orient="index")
+    return Response(content=resp, media_type="application/json")
 
 def get_moved_itens():
-    return inventory_table.loc[inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.SCANNED_AND_MOVED.value].to_json(orient="index")
+    resp = inventory_table.loc[inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.SCANNED_AND_MOVED.value].to_json(orient="index")
+    return Response(content=resp, media_type="application/json")
