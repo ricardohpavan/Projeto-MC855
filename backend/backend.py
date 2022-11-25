@@ -9,6 +9,7 @@ INVENTORY_FILE = pathlib.Path('inventory.xlsx')
 AREA_COLUMN = 'Área de Patrimônio'
 ID_COLUMN = 'Identificador'
 DEPRECATED_ID_COLUMN = 'PI Antigo'
+ITEM_DESCRIPTION_COLUMN = 'Descrição'
 ORGANIZATION_DESCRIPTION_COLUMN = 'Desc. Órgão'
 BUILDING_COLUMN = 'Imóvel'
 N1_COLUMN = 'Local N1'
@@ -23,6 +24,7 @@ COLUMNS = [
     AREA_COLUMN,
     ID_COLUMN,
     DEPRECATED_ID_COLUMN,
+    ITEM_DESCRIPTION_COLUMN,
     ORGANIZATION_DESCRIPTION_COLUMN,
     BUILDING_COLUMN,
     N1_COLUMN,
@@ -50,7 +52,7 @@ class Location():
         n5: {self.n5})\
         '
 
-    def __init__(self, area: str, organization_description: str, building: str, n1: str, n2: str, n3: str, n4: str, n5: str):
+    def __init__(self, area: str, item_description: str, organization_description: str, building: str, n1: str, n2: str, n3: str, n4: str, n5: str):
         self.area = area
         self.organization_description = organization_description
         self.building = building
