@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
 
-class DecisionModal extends StatelessWidget {
-  const DecisionModal({super.key});
+class DecisionModal extends StatefulWidget {
+  final dynamic item;
+  const DecisionModal({Key? key, required this.item}) : super(key: key);
 
   @override
+  State<DecisionModal> createState() => _DecisionModalState();
+}
+
+class _DecisionModalState extends State<DecisionModal> {
+  @override
   Widget build(BuildContext context) {
+    if (widget.item == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return SimpleDialog(
       title: const Text('Item encontrado'),
       titleTextStyle: const TextStyle(
@@ -20,8 +31,8 @@ class DecisionModal extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              children: const [
-                Text(
+              children: [
+                const Text(
                   'Item:',
                   style: TextStyle(
                     fontSize: 16,
@@ -29,16 +40,16 @@ class DecisionModal extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  ' Cadeira de escritório',
-                  style: TextStyle(
+                  ' ${widget.item['Área de Patrimônio']}',
+                  style: const TextStyle(
                     fontSize: 16,
                   ),
                 ),
               ],
             ),
             Row(
-              children: const [
-                Text(
+              children: [
+                const Text(
                   'Local:',
                   style: TextStyle(
                     fontSize: 16,
@@ -46,8 +57,8 @@ class DecisionModal extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  ' IC -> Pavimento 2 -> Sala 514',
-                  style: TextStyle(
+                  ' ${widget.item['Área de Patrimônio']} -> ${widget.item['Local N2']}',
+                  style: const TextStyle(
                     fontSize: 16,
                   ),
                 ),
@@ -72,12 +83,13 @@ class DecisionModal extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {},
                     style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(Colors.red),
                       fixedSize: MaterialStatePropertyAll(
                         Size.fromWidth(80),
                       ),
                     ),
                     child: const Text(
-                      'Sim',
+                      'Não',
                     ),
                   ),
                   ElevatedButton(
@@ -88,7 +100,7 @@ class DecisionModal extends StatelessWidget {
                       ),
                     ),
                     child: const Text(
-                      'Não',
+                      'Sim',
                     ),
                   ),
                 ],
