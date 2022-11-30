@@ -22,6 +22,7 @@ class _DecisionModalState extends State<DecisionModal> {
         fontSize: 20,
         fontWeight: FontWeight.w600,
         letterSpacing: 1.1,
+        color: Colors.black
       ),
       contentPadding: const EdgeInsets.all(20),
       children: [
@@ -39,10 +40,14 @@ class _DecisionModalState extends State<DecisionModal> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                Text(
-                  ' ${widget.item['Área de Patrimônio']}',
-                  style: const TextStyle(
-                    fontSize: 16,
+                Expanded(
+                  child: Text(
+                    ' ${widget.item['Descrição']}',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
                   ),
                 ),
               ],
@@ -81,7 +86,9 @@ class _DecisionModalState extends State<DecisionModal> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => {
+                        Navigator.pop(context, "0")
+                    },
                     style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Colors.red),
                       fixedSize: MaterialStatePropertyAll(
@@ -93,7 +100,11 @@ class _DecisionModalState extends State<DecisionModal> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => {
+                      
+
+                      Navigator.pop(context, "1")
+                    },
                     style: const ButtonStyle(
                       fixedSize: MaterialStatePropertyAll(
                         Size.fromWidth(80),
