@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:mc855/api/api_service.dart';
 import 'package:mc855/components/overlay_loading.dart';
 import 'package:mc855/pages/scan.dart';
 
@@ -25,6 +28,9 @@ class _UploadState extends State<Upload> {
       return;
     }
     PlatformFile file = result.files.first;
+    await ApiService().upload(file).then((response) {
+      print(response);
+    });
     // ignore: use_build_context_synchronously
     Navigator.push(
       context,
