@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mc855/api/api_service.dart';
 import 'package:mc855/components/decision_modal.dart';
 
 class Scan extends StatefulWidget {
@@ -11,8 +12,31 @@ class Scan extends StatefulWidget {
 class _ScanState extends State<Scan> {
   TextEditingController inputController = TextEditingController();
 
-  void handleAnalysis() {
-    showDialog(context: context, builder: (_) => const DecisionModal());
+  void handleAnalysis(id) async {
+    showDialog(
+      context: context,
+      builder: (_) => const DecisionModal(
+        item: null,
+      ),
+    );
+    try {
+      await ApiService().getItem(id).then((response) {
+        Navigator.pop(context);
+        showDialog(
+          context: context,
+          builder: (_) => DecisionModal(
+            item: response,
+          ),
+        );
+      });
+    } catch (e) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(
+            "Erro ao buscar item, verifique o ID digitado e tente novamente"),
+      ));
+    }
   }
 
   @override
@@ -56,7 +80,19 @@ class _ScanState extends State<Scan> {
               ),
             ),
             ElevatedButton(
-              onPressed: () => handleAnalysis(),
+              onPressed: () {
+                if (inputController.text.isNotEmpty) {
+                  handleAnalysis(inputController.text);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Text(
+                          "Por favor, digite o ID do objeto e tente novamente"),
+                    ),
+                  );
+                }
+              },
               style: const ButtonStyle(
                 minimumSize: MaterialStatePropertyAll(Size.fromHeight(40)),
               ),
