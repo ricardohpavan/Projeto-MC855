@@ -29,17 +29,15 @@ class _UploadState extends State<Upload> {
     }
     PlatformFile file = result.files.first;
     await ApiService().upload(file).then((response) {
-      print(response);
-    });
-    // ignore: use_build_context_synchronously
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const Scan(),
-      ),
-    );
-    setState(() {
-      isLoading = false;
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Scan(),
+        ),
+      );
     });
   }
 
