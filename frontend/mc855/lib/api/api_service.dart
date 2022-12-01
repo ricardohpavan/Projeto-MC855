@@ -52,15 +52,14 @@ class ApiService {
 
   Future<dynamic> setItemStatus(itemId, status) async {
     try {
-      var url = Uri.parse('http://127.0.0.1:8000/set-item-status');
-      var response = await http.put(url, body:{
-        "item_id": itemId,
-        "status": status
-      });
+      var url = Uri.parse(
+          'http://127.0.0.1:8000/set-item-status?item_id=$itemId&status=$status');
+      var response = await http.put(url);
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        return response.body;
       }
     } catch (e) {
+      print(e);
       throw ("Error setting status item");
     }
     return null;
