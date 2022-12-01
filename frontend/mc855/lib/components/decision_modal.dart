@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+
+import '../api/api_service.dart';
 
 class DecisionModal extends StatefulWidget {
   final dynamic item;
@@ -9,6 +13,23 @@ class DecisionModal extends StatefulWidget {
 }
 
 class _DecisionModalState extends State<DecisionModal> {
+  
+  Future<bool> _setItemStatus(itemId, status) async {
+    try {
+      return await ApiService().setItemStatus(itemId, status).then((response) {
+        var teste = jsonDecode(response!);
+        print(teste);
+        return teste;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        backgroundColor: Colors.red,
+        content: Text("Erro ao verificar dados"),
+      ));
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.item == null) {
@@ -87,6 +108,8 @@ class _DecisionModalState extends State<DecisionModal> {
                 children: [
                   ElevatedButton(
                     onPressed: () => {
+
+
                         Navigator.pop(context, "0")
                     },
                     style: const ButtonStyle(
@@ -101,9 +124,8 @@ class _DecisionModalState extends State<DecisionModal> {
                   ),
                   ElevatedButton(
                     onPressed: () => {
-                      
-
-                      Navigator.pop(context, "1")
+                      //_setItemStatus()
+                      Navigator.pop(context)
                     },
                     style: const ButtonStyle(
                       fixedSize: MaterialStatePropertyAll(
