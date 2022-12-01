@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../api/api_service.dart';
+import 'move_decision_modal.dart';
 
 class DecisionModal extends StatefulWidget {
   final dynamic item;
@@ -13,9 +14,9 @@ class DecisionModal extends StatefulWidget {
 }
 
 class _DecisionModalState extends State<DecisionModal> {
-  void _setItemStatus(itemId, status) async {
+  void _setItemStatus(status) async {
     try {
-      await ApiService().setItemStatus(itemId, status).then((response) {
+      await ApiService().setItemStatus(widget.id, status).then((response) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -108,7 +109,16 @@ class _DecisionModalState extends State<DecisionModal> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
-                    onPressed: () => _setItemStatus(widget.id, 1),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      showDialog(
+                        context: context,
+                        builder: (_) => MoveDecisionModal(
+                          item: widget.item,
+                          id: widget.id,
+                        ),
+                      );
+                    },
                     style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Colors.red),
                       fixedSize: MaterialStatePropertyAll(
@@ -120,7 +130,7 @@ class _DecisionModalState extends State<DecisionModal> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () => _setItemStatus(widget.id, 1),
+                    onPressed: () => _setItemStatus(1),
                     style: const ButtonStyle(
                       fixedSize: MaterialStatePropertyAll(
                         Size.fromWidth(80),
