@@ -25,10 +25,9 @@ class _DecisionModalState extends State<DecisionModal> {
         );
       });
     } catch (e) {
-      print(e);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         backgroundColor: Colors.red,
-        content: Text("Erro ao verificar dados"),
+        content: Text("Erro ao tentar mudar status do item"),
       ));
     }
   }

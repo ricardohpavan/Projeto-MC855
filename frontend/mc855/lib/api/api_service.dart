@@ -59,7 +59,6 @@ class ApiService {
         return response.body;
       }
     } catch (e) {
-      print(e);
       throw ("Error setting status item");
     }
     return null;
