@@ -78,4 +78,30 @@ class ApiService {
     }
     return null;
   }
+
+  Future<dynamic> scannedItems() async {
+    try {
+      var url = Uri.parse('http://127.0.0.1:8000/scanned-itens');
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      }
+    } catch (e) {
+      throw ("Error getting scanned items");
+    }
+    return null;
+  }
+
+  Future<dynamic> notScannedItems() async {
+    try {
+      var url = Uri.parse('http://127.0.0.1:8000/not-scanned-itens');
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      }
+    } catch (e) {
+      throw ("Error getting not scanned items");
+    }
+    return null;
+  }
 }
