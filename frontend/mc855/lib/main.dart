@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mc855/api/api_service.dart';
 import 'package:mc855/pages/scan.dart';
 import 'package:mc855/pages/upload.dart';
-import 'package:mc855/components/overlay_loading.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +33,6 @@ class _RootPageState extends State<RootPage> {
   void initState() {
     super.initState();
     _hasData().then((value) {
-      print(value);
       value
           ? Navigator.push(
               context,
@@ -55,7 +53,6 @@ class _RootPageState extends State<RootPage> {
     try {
       return await ApiService().uploadCheck().then((response) {
         var teste = jsonDecode(response!);
-        print(teste['was-file-uploaded']);
         return teste['was-file-uploaded'];
       });
     } catch (e) {

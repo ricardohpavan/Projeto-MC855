@@ -17,30 +17,40 @@ class _UploadState extends State<Upload> {
   bool isLoading = false;
 
   void _pickFile() async {
-    setState(() {
-      isLoading = true;
-    });
-    var result = await FilePicker.platform.pickFiles(withData: true);
-    if (result == null) {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      var result = await FilePicker.platform.pickFiles(withData: true);
+      if (result == null) {
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
+      PlatformFile file = result.files.first;
+      await ApiService().upload(file).then((response) {
+        setState(() {
+          isLoading = false;
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Scan(),
+          ),
+        );
+      });
+    } catch (e) {
       setState(() {
         isLoading = false;
       });
-      return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text("Erro ao enviar arquivo, tente novamente mais tarde"),
+        ),
+      );
     }
-    PlatformFile file = result.files.first;
-    await ApiService().upload(file).then((response) {
-      print(response);
-    });
-    // ignore: use_build_context_synchronously
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const Scan(),
-      ),
-    );
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override
