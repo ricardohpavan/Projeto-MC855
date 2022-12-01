@@ -1,33 +1,35 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 import '../api/api_service.dart';
 
 class DecisionModal extends StatefulWidget {
   final dynamic item;
-  const DecisionModal({Key? key, required this.item}) : super(key: key);
+  final dynamic id;
+  const DecisionModal({Key? key, required this.item, required this.id})
+      : super(key: key);
 
   @override
   State<DecisionModal> createState() => _DecisionModalState();
 }
 
 class _DecisionModalState extends State<DecisionModal> {
-  
-  Future<bool> _setItemStatus(itemId, status) async {
+  void _setItemStatus(itemId, status) async {
     try {
-      return await ApiService().setItemStatus(itemId, status).then((response) {
-        var teste = jsonDecode(response!);
-        print(teste);
-        return teste;
+      await ApiService().setItemStatus(itemId, status).then((response) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.green.shade600,
+            content: const Text("Status do item alterado"),
+          ),
+        );
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         backgroundColor: Colors.red,
-        content: Text("Erro ao verificar dados"),
+        content: Text("Erro ao tentar mudar status do item"),
       ));
     }
-    return false;
   }
 
   @override
@@ -40,11 +42,10 @@ class _DecisionModalState extends State<DecisionModal> {
     return SimpleDialog(
       title: const Text('Item encontrado'),
       titleTextStyle: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w600,
-        letterSpacing: 1.1,
-        color: Colors.black
-      ),
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 1.1,
+          color: Colors.black),
       contentPadding: const EdgeInsets.all(20),
       children: [
         Column(
@@ -107,11 +108,7 @@ class _DecisionModalState extends State<DecisionModal> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
-                    onPressed: () => {
-
-
-                        Navigator.pop(context, "0")
-                    },
+                    onPressed: () => _setItemStatus(widget.id, 1),
                     style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Colors.red),
                       fixedSize: MaterialStatePropertyAll(
@@ -123,10 +120,7 @@ class _DecisionModalState extends State<DecisionModal> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () => {
-                      //_setItemStatus()
-                      Navigator.pop(context)
-                    },
+                    onPressed: () => _setItemStatus(widget.id, 1),
                     style: const ButtonStyle(
                       fixedSize: MaterialStatePropertyAll(
                         Size.fromWidth(80),

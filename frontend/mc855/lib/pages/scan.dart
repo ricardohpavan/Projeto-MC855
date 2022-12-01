@@ -15,8 +15,9 @@ class _ScanState extends State<Scan> {
   void handleAnalysis(id) async {
     showDialog(
       context: context,
-      builder: (_) => const DecisionModal(
+      builder: (_) => DecisionModal(
         item: null,
+        id: inputController.text,
       ),
     );
     try {
@@ -26,6 +27,7 @@ class _ScanState extends State<Scan> {
           context: context,
           builder: (_) => DecisionModal(
             item: response,
+            id: inputController.text,
           ),
         );
       });
