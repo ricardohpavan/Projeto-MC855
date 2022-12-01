@@ -9,6 +9,7 @@ from enum import Enum
 AREA_COLUMN = 'Área de Patrimônio'
 ID_COLUMN = 'Identificador'
 DEPRECATED_ID_COLUMN = 'PI Antigo'
+ITEM_DESCRIPTION_COLUMN = 'Descrição'
 ORGANIZATION_DESCRIPTION_COLUMN = 'Desc. Órgão'
 BUILDING_COLUMN = 'Imóvel'
 N1_COLUMN = 'Local N1'
@@ -25,6 +26,7 @@ COLUMNS = [
     DEPRECATED_ID_COLUMN,
     ORGANIZATION_DESCRIPTION_COLUMN,
     BUILDING_COLUMN,
+    ITEM_DESCRIPTION_COLUMN,
     N1_COLUMN,
     N2_COLUMN,
     N3_COLUMN,
@@ -41,6 +43,7 @@ class Location():
 
     def __repr__(self):
         return f'(area: {self.area},\
+        item_description: {self.item_description},\
         organization_description: {self.organization_description},\
         building: {self.building},\
         n1: {self.n1},\
@@ -50,8 +53,9 @@ class Location():
         n5: {self.n5})\
         '
 
-    def __init__(self, area: str, organization_description: str, building: str, n1: str, n2: str, n3: str, n4: str, n5: str):
+    def __init__(self, area: str, item_description: str, organization_description: str, building: str, n1: str, n2: str, n3: str, n4: str, n5: str):
         self.area = area
+        self.item_description = item_description
         self.organization_description = organization_description
         self.building = building
         self.n1 = n1
