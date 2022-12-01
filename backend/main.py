@@ -119,12 +119,12 @@ def upload(file: UploadFile = File(...)):
         contents = file.file.read()
         with open(file.filename, 'wb') as f:
             f.write(contents)
-        app.INVENTORY_FILE = pathlib.Path('inventory.xlsx')
+        app.INVENTORY_FILE = pathlib.Path(file.filename)
         app.inventory_table = pd.read_excel(app.INVENTORY_FILE, index_col=ID_COLUMN, usecols=COLUMNS)
         #Creates a status column and initializes all of its cells with the NOT_SCANNED status value
-        app.inventory_table[app.ITEM_STATUS_COLUMN] = ITEM_STATUS.NOT_SCANNED.valu
-    except Exception:
-        return {"message": "There was an error uploading the file"}
+        app.inventory_table[ITEM_STATUS_COLUMN] = ITEM_STATUS.NOT_SCANNED.value
+    except Exception as e:
+        return {"message": "There was an error uploading the file", "exception": e.__repr__()}
     finally:
         file.file.close()
 
@@ -138,6 +138,8 @@ def unload_database():
         os.remove(app.filename)
         filename = app.filename
         del app.filename
+        del app.inventory_table
+        del app.INVENTORY_FILE
         app.was_file_uploaded = False
         return {"message": f"Successfully unloaded {filename}"}
     else:
@@ -162,8 +164,8 @@ def set_item_location(item_id, location: Location):
     app.inventory_table.loc[item_id, N5_COLUMN] = location.n5
     return location
 
-def get_item_location(inventory_table, item_id):
-    return inventory_table.loc[item_id].to_json(orient="index")
+def get_item_location(item_id):
+    return app.inventory_table.loc[item_id].to_json(orient="index")
 
 def get_not_scanned_itens():
     return app.inventory_table.loc[app.inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.NOT_SCANNED.value].to_json(orient="index")
