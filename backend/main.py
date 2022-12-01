@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Response
 from enum import Enum
 import pandas as pd
 import pathlib
@@ -165,13 +165,17 @@ def set_item_location(item_id, location: Location):
     return location
 
 def get_item_location(item_id):
-    return app.inventory_table.loc[item_id].to_json(orient="index")
+    resp = app.inventory_table.loc[item_id].to_json(orient="index")
+    return Response(content=resp, media_type="application/json")
 
 def get_not_scanned_itens():
-    return app.inventory_table.loc[app.inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.NOT_SCANNED.value].to_json(orient="index")
+    resp = app.inventory_table.loc[app.inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.NOT_SCANNED.value].to_json(orient="index")
+    return Response(content=resp, media_type="application/json") 
 
 def get_scanned_itens():
-    return app.inventory_table.loc[app.inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.SCANNED.value].to_json(orient="index")
+    resp = app.inventory_table.loc[app.inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.SCANNED.value].to_json(orient="index")
+    return Response(content=resp, media_type="application/json")
 
 def get_moved_itens():
-    return app.inventory_table.loc[app.inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.SCANNED_AND_MOVED.value].to_json(orient="index")
+    resp = app.inventory_table.loc[app.inventory_table[ITEM_STATUS_COLUMN] == ITEM_STATUS.SCANNED_AND_MOVED.value].to_json(orient="index")
+    return Response(content=resp, media_type="application/json")
