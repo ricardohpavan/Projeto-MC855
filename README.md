@@ -61,6 +61,8 @@ Os ambientes utilizados foram:
 - *VSCode* para o front-end do Flutter (necessário instalar extensão específica para compatibilidade com o Flutter);
 - *PyCharm* para o back-end com Python.
 
+Vale ressaltar que devem ser baixado as dependências, no pycharm pode ser usado o comando pip intall -r requeriments.txt. No caso do vs code, a extensão do flutter deve pedir para instalar, quem estiver fazendo a build só precisar confirmar.
+
 Para o gerenciamento e versionamento do código foi usado o GitHub e um quadro de tarefas foi criado no Trello.
 
 
@@ -77,7 +79,7 @@ Para iniciar a aplicação no Flutter, basta selecionar o modo para o simulador 
 Feito isso, o programa deverá rodar como previsto.
 
 #### Como acessar, quem pode se cadastrar(regras de acessos), etc.
-O projeto não possui nenhuma restrição de acesso, sendo somente necessária uma planilha do Excel com os campos utilizados para as informações de cada item.
+O projeto não possui nenhuma restrição de acesso, sendo somente necessária uma planilha do Excel com os campos utilizados para as informações de cada item. Para futuros trabalhos com esse projeto, esse tópico de segurança e restrições é importante priorizar, visto que focamos mais em um MVP neste momento. 
 
 Esses campos, e suas definições, são:
 - Para a identificação do item:
