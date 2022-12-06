@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mc855/api/api_service.dart';
 import 'package:mc855/components/decision_modal.dart';
+import 'package:mc855/pages/summary.dart';
 
 class Scan extends StatefulWidget {
   const Scan({super.key});
@@ -108,12 +109,19 @@ class _ScanState extends State<Scan> {
               ),
             ),
             const Spacer(flex: 2),
-            const ElevatedButton(
-              onPressed: null,
-              style: ButtonStyle(
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Summary(),
+                  ),
+                );
+              },
+              style: const ButtonStyle(
                 minimumSize: MaterialStatePropertyAll(Size.fromHeight(50)),
               ),
-              child: Text(
+              child: const Text(
                 'Sumário',
                 style: TextStyle(
                   color: Colors.white,
