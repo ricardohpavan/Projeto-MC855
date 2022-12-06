@@ -37,6 +37,12 @@ class _UploadState extends State<Upload> {
             builder: (context) => const Scan(),
           ),
         );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.green.shade600,
+            content: const Text("Arquivo enviado com sucesso"),
+          ),
+        );
       });
     } catch (e) {
       setState(() {

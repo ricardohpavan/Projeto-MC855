@@ -63,4 +63,19 @@ class ApiService {
     }
     return null;
   }
+
+  Future<dynamic> setItemLocation(itemId, area, organization_description,
+      building, n1, n2, n3, n4, n5) async {
+    try {
+      var url = Uri.parse(
+          'http://127.0.0.1:8000/set-item-location?item_id=$itemId&area=$area&organization_description=$organization_description&building=$building&n1=$n1&n2=$n2&n3=$n3&n4=$n4&n5=$n5');
+      var response = await http.put(url);
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      }
+    } catch (e) {
+      throw ("Error setting status item");
+    }
+    return null;
+  }
 }
